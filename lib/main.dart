@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Text('Best coffee for you ',style: TextStyle(color: Colors.white,fontSize: 45,fontWeight: FontWeight.w100),),
               GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Home() ,));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen() ,));
                   },
                   child: Container(
                     height: 75,
