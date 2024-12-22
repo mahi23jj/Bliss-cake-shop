@@ -27,6 +27,9 @@ class _listState extends State<list> {
   ];
 
 
+  
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +53,7 @@ class _listState extends State<list> {
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
               child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('coffee').snapshots(),
+                stream: FirebaseFirestore.instance.collection('use').doc('1').collection('favorites').snapshots(),
                 builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
                   if(!snapshot.hasData){  
                     return Center(child: CircularProgressIndicator());
@@ -88,8 +91,8 @@ class _listState extends State<list> {
                                       children: [
                                        
                                         Image.asset(
-                                         // doc['img'],
-                                          cf[index].img,
+                                         doc['img'],
+                                          // cf[index].img,
                                           height: 80,
                                           width: 60,
                                         ),
@@ -108,7 +111,7 @@ class _listState extends State<list> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text(
-                                              '\$${doc['prc']}',
+                                              '\$${doc['price']}',
                                               style: TextStyle(
                                                   color: Colors.grey,
                                                   fontWeight: FontWeight.w200),
@@ -124,8 +127,8 @@ class _listState extends State<list> {
                                               MaterialPageRoute(
                                                 builder: (context) => detail(
                                                   id:doc.id ,
-                                                  img: cf[index].img,
-                                                  prc: doc['prc'],
+                                                  img: doc['img'],
+                                                  prc: doc['price'],
                                                   name: doc['name'],
                                                 ),
                                               ));
