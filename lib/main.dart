@@ -1,17 +1,8 @@
-import 'package:coffee/methods/shared.dart';
-import 'package:coffee/page/cart.dart';
-import 'package:coffee/page/chat.dart';
-import 'package:coffee/page/detail.dart';
-import 'package:coffee/page/first.dart';
 import 'package:coffee/page/home.dart';
-import 'package:coffee/page/list.dart';
 import 'package:coffee/page/provider.dart';
-import 'package:coffee/page/search.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:hive/hive.dart';
-// import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 

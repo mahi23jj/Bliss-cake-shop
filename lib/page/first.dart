@@ -1,18 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffee/methods/class.dart';
-import 'package:coffee/methods/shared.dart';
-import 'package:coffee/navigation.dart';
-import 'package:coffee/page/cart.dart';
-import 'package:coffee/page/detail.dart';
 import 'package:coffee/page/favotite_button.dart';
-import 'package:coffee/page/first.dart';
-import 'package:coffee/page/normal_dis.dart';
 import 'package:coffee/page/provider.dart';
-import 'package:coffee/page/search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class first extends StatefulWidget {
   const first({super.key});

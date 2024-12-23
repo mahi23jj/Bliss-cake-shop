@@ -1,13 +1,6 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffee/methods/class.dart';
-import 'package:coffee/methods/shared.dart';
-import 'package:coffee/payment/page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class cart extends StatefulWidget {
   cart({

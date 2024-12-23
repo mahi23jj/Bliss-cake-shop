@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
 
 class CategoryProvider extends ChangeNotifier {
   int _category = 0;

@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee/page/detail.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+
 
 class Search extends StatefulWidget {
   const Search({super.key});

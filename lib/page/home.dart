@@ -1,12 +1,9 @@
-import 'package:coffee/methods/class.dart';
-import 'package:coffee/methods/shared.dart';
 import 'package:coffee/navigation.dart';
 import 'package:coffee/page/cart.dart';
-import 'package:coffee/page/detail.dart';
 import 'package:coffee/page/first.dart';
 import 'package:coffee/page/list.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Home extends StatefulWidget {
   const Home({super.key});

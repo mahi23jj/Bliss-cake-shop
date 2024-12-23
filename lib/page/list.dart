@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee/methods/class.dart';
-import 'package:coffee/navigation.dart';
 import 'package:coffee/page/detail.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class list extends StatefulWidget {
