@@ -1,3 +1,4 @@
+import 'package:coffee/page/chat.dart';
 import 'package:coffee/page/home.dart';
 import 'package:coffee/page/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,7 @@ Future main() async {
           authDomain: "login-4471f.firebaseapp.com",
           projectId: "login-4471f",
           storageBucket: "login-4471f.appspot.com",
+          databaseURL: "https://login-4471f-default-rtdb.firebaseio.com/",
           messagingSenderId: "953539689403",
           appId: "1:953539689403:web:4b52be341be90317b4e29e"),
     );
@@ -77,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Text('Best coffee for you ',style: TextStyle(color: Colors.white,fontSize: 45,fontWeight: FontWeight.w100),),
               GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen( receiverId:'user2',senderId:'user1',),));
                   },
                   child: Container(
                     height: 75,

@@ -1,39 +1,86 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:firebase_database/firebase_database.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String senderId;
+  final String receiverId;
+
+  ChatScreen({required this.senderId, required this.receiverId});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<Message> messages = [];
+  final DatabaseReference database = FirebaseDatabase.instance.ref();
   final TextEditingController controller = TextEditingController();
 
-  void sendMessage(String text, bool isMe) {
+  void sendMessage(String text) {
     if (text.isNotEmpty) {
-      setState(() {
-        messages.add(Message(text: text, isMe: isMe));
-        controller.clear();
-      });
+      final message = {
+        'senderId': widget.senderId,
+        'receiverId': widget.receiverId,
+        'text': text,
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+      };
+
+      // Save message under a unique chat ID (combination of sender and receiver IDs)
+      final chatId = _generateChatId(widget.senderId, widget.receiverId);
+      database.child('chats/$chatId').push().set(message);
+      controller.clear();
     }
+  }
+
+  String _generateChatId(String senderId, String receiverId) {
+    return senderId.compareTo(receiverId) < 0
+        ? '${senderId}_$receiverId'
+        : '${receiverId}_$senderId';
   }
 
   @override
   Widget build(BuildContext context) {
+    final chatId = _generateChatId(widget.senderId, widget.receiverId);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat App'),
+        title: Text('Chat with ${widget.receiverId}'),
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              reverse: true,
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                return ChatBubble(message: messages[index]);
+            child: StreamBuilder(
+              stream: database.child('chats/$chatId').orderByChild('timestamp').onValue,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasData && snapshot.data != null) {
+                  final event = snapshot.data as DatabaseEvent;
+                  final messages = event.snapshot.value as Map<dynamic, dynamic>?;
+
+                  if (messages == null) {
+                    return Center(child: Text('No messages yet.'));
+                  }
+
+                  final messageList = messages.entries.map((entry) {
+                    final messageData = entry.value as Map<dynamic, dynamic>;
+                    return Message(
+                      senderId: messageData['senderId'],
+                      text: messageData['text'],
+                      isMe: messageData['senderId'] == widget.senderId,
+                    );
+                  }).toList();
+
+                  return ListView.builder(
+                    itemCount: messageList.length,
+                    itemBuilder: (context, index) {
+                      return ChatBubble(message: messageList[index]);
+                    },
+                  );
+                }
+
+                return Center(child: Text('Error loading messages.'));
               },
             ),
           ),
@@ -52,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: () => sendMessage(controller.text, true),
+                  onPressed: () => sendMessage(controller.text),
                 ),
               ],
             ),
@@ -64,10 +111,11 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class Message {
+  final String senderId;
   final String text;
   final bool isMe;
 
-  Message({required this.text, required this.isMe});
+  Message({required this.senderId, required this.text, required this.isMe});
 }
 
 class ChatBubble extends StatelessWidget {

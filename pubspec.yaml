@@ -47,7 +47,8 @@ dependencies:
   url_launcher:
   chapasdk: 
   stripe_payment:
-  
+  firebase_database: ^10.1.3
+
 
 
 
