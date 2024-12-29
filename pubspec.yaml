@@ -48,6 +48,8 @@ dependencies:
   chapasdk: 
   stripe_payment:
   firebase_database: ^10.1.3
+  image_picker:
+  carousel_slider:
 
 
 

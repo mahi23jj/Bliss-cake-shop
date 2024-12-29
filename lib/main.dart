@@ -1,6 +1,9 @@
 import 'package:coffee/page/chat.dart';
+import 'package:coffee/page/custome_disc.dart';
+import 'package:coffee/page/filter.dart';
 import 'package:coffee/page/home.dart';
 import 'package:coffee/page/provider.dart';
+import 'package:coffee/page/search.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +40,7 @@ class MyApp extends StatelessWidget {
       create: (context) =>CategoryProvider(),
         child: MaterialApp(
           title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             colorScheme:
                 ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 59, 26, 7)),
@@ -79,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Text('Best coffee for you ',style: TextStyle(color: Colors.white,fontSize: 45,fontWeight: FontWeight.w100),),
               GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen( receiverId:'user2',senderId:'user1',),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
                   },
                   child: Container(
                     height: 75,

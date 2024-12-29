@@ -9,4 +9,5 @@ class CategoryProvider extends ChangeNotifier {
     _category = newCategory;
     notifyListeners();
   }
+  
 }
