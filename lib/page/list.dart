@@ -120,16 +120,17 @@ class _listState extends State<list> {
                                     ),
                                     IconButton(
                                         onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => detail(
-                                                  id:doc.id ,
-                                                  img: doc['img'],
-                                                  prc: doc['price'],
-                                                  name: doc['name'],
-                                                ),
-                                              ));
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) => disc(
+                                          //         id:doc.id ,
+                                          //         img: doc['img'],
+                                          //         prc: doc['price'],
+                                          //         name: doc['name'],
+                                          //         filter: doc['filter'],
+                                          //       ),
+                                          //     ));
                                         },
                                         icon: Icon(
                                           Icons.arrow_forward,

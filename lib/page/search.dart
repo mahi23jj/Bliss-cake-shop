@@ -682,16 +682,16 @@ Color c = Color.fromRGBO(56, 34, 8, 1);
                                     ),
                                     IconButton(
                                         onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => detail(
-                                                  id: doc.id,
-                                                  img: doc['img'],
-                                                  prc: doc['prc'],
-                                                  name: doc['name'],
-                                                ),
-                                              ));
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) => detail(
+                                          //         id: doc.id,
+                                          //         img: doc['img'],
+                                          //         prc: doc['prc'],
+                                          //         name: doc['name'],
+                                          //       ),
+                                          //     ));
                                         },
                                         icon: Icon(
                                           Icons.arrow_forward,
