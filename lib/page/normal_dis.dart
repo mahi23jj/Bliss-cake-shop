@@ -9,12 +9,15 @@ class disc extends StatefulWidget {
   String img;
   String name;
   double prc;
+  List<String> falvor;
   disc(
       {super.key,
       required this.id,
       required this.img,
       required this.prc,
-      required this.name});
+      required this.name,
+      required this.falvor
+      });
 
   @override
   State<disc> createState() => _discState(id, img, prc, name);
@@ -109,9 +112,11 @@ class _discState extends State<disc> {
 //  void del(int j){
 //   carts.delete(j);
 //   lode();
-//  }
-  String selectedFlavor = 'Chocolate';
-  final List<String> flavors = ['Chocolate', 'Vanilla', 'Red Velvet'];
+//  } 
+//
+String selectedFlavor = ''; // Variable to store the selected flavor
+ 
+ 
    int _rating = 0; // Initial rating value
      final TextEditingController _commentController = TextEditingController();
   final List<String> _comments = []; // List to store comments
@@ -251,7 +256,7 @@ class _discState extends State<disc> {
                       });
                     },
                     items:
-                        flavors.map<DropdownMenuItem<String>>((String flavor) {
+                        widget.falvor.map<DropdownMenuItem<String>>((String flavor) {
                       return DropdownMenuItem<String>(
                         value: flavor,
                         child: Text(flavor),

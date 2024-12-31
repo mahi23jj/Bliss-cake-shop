@@ -1,6 +1,7 @@
 import 'package:coffee/page/chat.dart';
 import 'package:coffee/page/custome_disc.dart';
 import 'package:coffee/page/filter.dart';
+import 'package:coffee/page/first.dart';
 import 'package:coffee/page/home.dart';
 import 'package:coffee/page/provider.dart';
 import 'package:coffee/page/search.dart';
@@ -83,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Text('Best coffee for you ',style: TextStyle(color: Colors.white,fontSize: 45,fontWeight: FontWeight.w100),),
               GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => first()));
                   },
                   child: Container(
                     height: 75,
