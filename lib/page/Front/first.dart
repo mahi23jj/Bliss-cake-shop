@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffee/page/favotite_button.dart';
-import 'package:coffee/page/normal_dis.dart';
-import 'package:coffee/page/provider.dart';
+import 'package:coffee/page/Favotite/favotite_button.dart';
+import 'package:coffee/page/discription/normal_dis.dart';
+import 'package:coffee/methods/provider.dart';
+import 'package:coffee/page/search/search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -262,12 +263,11 @@ class _listState extends State<first> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => disc(
-
                                                 id: doc.id,
                                                 img: doc['img'],
                                                 prc: doc['prc'],
                                                 name: doc['name'],
-                                                falvor: doc['flavor'] ,
+                                                falvor: (doc['flavor'] as List<dynamic>).map((e) => e.toString()).toList() ,
                                                 ),
                                           ));
                                     },
@@ -287,51 +287,62 @@ class _listState extends State<first> {
 }
 
 Widget appbar() {
-  return Row(
-    children: [
-      // Search
-      Expanded(
-        child: Container(
-          height: 50,
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.search, color: Colors.grey),
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  ),
-                ),
+  return Builder(
+    builder: (context) {
+      return Row(
+        children: [
+          // Search
+          Expanded(
+            child: Container(
+              height: 50,
+              margin: EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
               ),
-            ],
-          ),
-        ),
-      ),
-      // Filter Icon
-      Container(
-        height: 50,
-        width: 50,
-        margin: EdgeInsets.only(left: 10),
-        decoration: BoxDecoration(
-            color: Colors.brown.shade700,
-            borderRadius: BorderRadius.circular(10)),
-        child: Center(
-          child: IconButton(
-            icon: Icon(Icons.shopping_bag_outlined, color: Colors.white),
-            onPressed: () {
-              // Add your filter action here
+              child: Row(
+      children: [
+        Icon(Icons.search, color: Colors.grey),
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            ),
+            onChanged: (text) {
+              if (text.isNotEmpty) {
+                // Navigate to another page
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>Search(),));
+              }
             },
           ),
         ),
-      ),
-    ],
+      ],
+      )
+      
+            ),
+          ),
+          // Filter Icon
+          Container(
+            height: 50,
+            width: 50,
+            margin: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Colors.brown.shade700,
+                borderRadius: BorderRadius.circular(10)),
+            child: Center(
+              child: IconButton(
+                icon: Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                onPressed: () {
+                  // Add your filter action here
+                },
+              ),
+            ),
+          ),
+        ],
+      );
+    }
   );
 }
 

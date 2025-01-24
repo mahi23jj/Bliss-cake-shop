@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffee/page/detail.dart';
-import 'package:coffee/page/provider.dart';
+import 'package:coffee/page/not_used/detail.dart';
+import 'package:coffee/methods/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

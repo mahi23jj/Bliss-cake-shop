@@ -1,7 +1,7 @@
-import 'package:coffee/navigation.dart';
-import 'package:coffee/page/cart.dart';
-import 'package:coffee/page/first.dart';
-import 'package:coffee/page/list.dart';
+import 'package:coffee/page/Navigation/navigation.dart';
+import 'package:coffee/page/cart/cart.dart';
+import 'package:coffee/page/Front/first.dart';
+import 'package:coffee/page/Favotite/list.dart';
 import 'package:flutter/material.dart';
 
 

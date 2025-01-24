@@ -20,7 +20,7 @@ class disc extends StatefulWidget {
       });
 
   @override
-  State<disc> createState() => _discState(id, img, prc, name);
+  State<disc> createState() => _discState(id, img, prc, name, falvor);
 }
 
 class _discState extends State<disc> {
@@ -28,7 +28,8 @@ class _discState extends State<disc> {
   String img;
   String name;
   double prc;
-  _discState(this.id, this.img, this.prc, this.name);
+  List<String> falvor;
+  _discState(this.id, this.img, this.prc, this.name,this.falvor);
   //car elem=car();
 
 // void addToCart(String userId, String name, double quantity) {
@@ -129,6 +130,24 @@ String selectedFlavor = ''; // Variable to store the selected flavor
       _commentController.clear(); // Clear the text field after adding a comment
     }
   }
+
+    Stream<List<DocumentSnapshot>> getCoffeeData() {
+    return FirebaseFirestore.instance.collection('coffee').doc(id).collection('comment').snapshots().map(
+          (snapshot) => snapshot.docs,
+        );
+  }
+
+
+ void addComment(String comment){
+  FirebaseFirestore.instance.collection('coffee').doc(id).collection('comment').add({
+    // 'username':"${FirebaseAuth.instance.currentUser!.displayName}",
+     'username':"kalkidan",
+     'detail':comment,
+  });
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -248,53 +267,57 @@ String selectedFlavor = ''; // Variable to store the selected flavor
                   SizedBox(
                     height: 15,
                   ),
-                  DropdownButton<String>(
-                    value: selectedFlavor,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedFlavor = newValue!;
-                      });
-                    },
-                    items:
-                        widget.falvor.map<DropdownMenuItem<String>>((String flavor) {
-                      return DropdownMenuItem<String>(
-                        value: flavor,
-                        child: Text(flavor),
-                      );
-                    }).toList(),
-                  ),
+                  // Text('$falvor')
+                DropdownButton<String>(
+  value: selectedFlavor.isNotEmpty && falvor.contains(selectedFlavor) 
+      ? selectedFlavor 
+      : null,
+  onChanged: (String? newValue) {
+    setState(() {
+      selectedFlavor = newValue!;
+    });
+  },
+  hint: Text("Select a flavor"), // Displayed when value is null
+  items: falvor.map<DropdownMenuItem<String>>((String flavor) {
+    return DropdownMenuItem<String>(
+      value: flavor,
+      child: Text(flavor),
+    );
+  }).toList(),
+),
+
                     ],
                   ),
 
                   SizedBox(
-                    height: 15,
+                    height: 30,
                   ),
-                  Text(
-                    'Rate',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Center(
-                    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) {
-        return IconButton(
-          onPressed: () {
-            setState(() {
-              _rating = index + 1; // Update the rating based on the star clicked
-            });
-          },
-          icon: Icon(
-            Icons.star,
-            color: index < _rating ? Colors.yellow : Colors.grey, // Yellow for selected stars
-            size: 40.0,
-          ),
-        );
-      }),
-    ),
-                  ),
+    //               Text(
+    //                 'Rate',
+    //                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    //               ),
+    //               SizedBox(
+    //                 height: 5,
+    //               ),
+    //               Center(
+    //                 child: Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: List.generate(5, (index) {
+    //     return IconButton(
+    //       onPressed: () {
+    //         setState(() {
+    //           _rating = index + 1; // Update the rating based on the star clicked
+    //         });
+    //       },
+    //       icon: Icon(
+    //         Icons.star,
+    //         color: index < _rating ? Colors.yellow : Colors.grey, // Yellow for selected stars
+    //         size: 40.0,
+    //       ),
+    //     );
+    //   }),
+    // ),
+    //               ),
           Column(
   children: [
     Padding(
@@ -306,15 +329,18 @@ String selectedFlavor = ''; // Variable to store the selected flavor
               controller: _commentController,
               decoration: InputDecoration(
                 hintText: 'Add a comment...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
+                border: UnderlineInputBorder(borderSide: BorderSide.none),
               ),
             ),
           ),
           const SizedBox(width: 8.0),
           ElevatedButton(
-            onPressed: _addComment,
+          onPressed: (){
+            setState(() {
+              addComment(_commentController.text);
+              _commentController.text=''; // Clear the text field after adding the comment
+            });
+          },
             child: const Text('Post'),
           ),
         ],
@@ -329,29 +355,73 @@ const Divider(),
           height: 150,
            child: SingleChildScrollView(
             
-            child: _comments.isEmpty
-                ? const Center(
+            child: 
+              Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: StreamBuilder<List<DocumentSnapshot>>(
+                  stream: getCoffeeData(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasData) {
+                      List<DocumentSnapshot> docment = snapshot.data!;
+                         
+                      return ListView.builder(
+                    // Allow ListView to size itself
+                    // physics: const NeverScrollableScrollPhysics(), // Disable internal scrolling
+                    itemCount: docment.length,
+                    itemBuilder: (context, index) {
+                    var doc=docment[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          child: Text(
+                            doc['username'][0].toUpperCase(),
+                          ), // First letter as an avatar
+                        ),
+                        title: Text(doc['username'],style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text(doc['detail']), // Placeholder timestamp
+                      );
+                    },
+                  );
+                    } else {
+                      return const Center(
                     child: Text(
                       'No comments yet. Be the first to comment!',
                       style: TextStyle(fontSize: 16),
                     ),
-                  )
-                : ListView.builder(
-                    // Allow ListView to size itself
-                    // physics: const NeverScrollableScrollPhysics(), // Disable internal scrolling
-                    itemCount: _comments.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                          child: Text(
-                            _comments[index][0].toUpperCase(),
-                          ), // First letter as an avatar
-                        ),
-                        title: Text(_comments[index]),
-                        subtitle: const Text('Just now'), // Placeholder timestamp
-                      );
-                    },
-                  ),
+                  );
+                    }
+                  }),
+            )
+            
+            
+            // _comments.isEmpty
+            //     ? const Center(
+            //         child: Text(
+            //           'No comments yet. Be the first to comment!',
+            //           style: TextStyle(fontSize: 16),
+            //         ),
+            //       )
+            //     : ListView.builder(
+            //         // Allow ListView to size itself
+            //         // physics: const NeverScrollableScrollPhysics(), // Disable internal scrolling
+            //         itemCount: _comments.length,
+            //         itemBuilder: (context, index) {
+            //           return ListTile(
+            //             leading: CircleAvatar(
+            //               child: Text(
+            //                 _comments[index][0].toUpperCase(),
+            //               ), // First letter as an avatar
+            //             ),
+            //             title: Text(_comments[index]),
+            //             subtitle: const Text('Just now'), // Placeholder timestamp
+            //           );
+            //         },
+            //       ),
+
+
+
                    ),
          ),
       

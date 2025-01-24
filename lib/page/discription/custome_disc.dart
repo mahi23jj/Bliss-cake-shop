@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:coffee/page/chat.dart';
-import 'package:coffee/page/search.dart';
+import 'package:coffee/page/chat/chat.dart';
+import 'package:coffee/page/search/search.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

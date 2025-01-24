@@ -5,7 +5,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 class nav extends StatelessWidget {
   void Function(int)? onTabChange;
   nav({super.key,required this.onTabChange});
-
   @override
   Widget build(BuildContext context) {
     return GNav(
