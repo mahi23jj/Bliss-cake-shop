@@ -122,15 +122,7 @@ String selectedFlavor = ''; // Variable to store the selected flavor
      final TextEditingController _commentController = TextEditingController();
   final List<String> _comments = []; // List to store comments
 
-  void _addComment() {
-    if (_commentController.text.trim().isNotEmpty) {
-      setState(() {
-        _comments.add(_commentController.text.trim());
-      });
-      _commentController.clear(); // Clear the text field after adding a comment
-    }
-  }
-
+  
     Stream<List<DocumentSnapshot>> getCoffeeData() {
     return FirebaseFirestore.instance.collection('coffee').doc(id).collection('comment').snapshots().map(
           (snapshot) => snapshot.docs,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee/page/Favotite/favotite_button.dart';
+import 'package:coffee/page/discription/custome_disc.dart';
 import 'package:coffee/page/discription/normal_dis.dart';
 import 'package:coffee/methods/provider.dart';
 import 'package:coffee/page/search/search.dart';
@@ -259,7 +260,19 @@ class _listState extends State<first> {
                                 var doc = docment[index];
                                 return GestureDetector(
                                     onTap: () {
+                                      (provider.category==2)?
                                       Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CakeOrderingPage(
+                                             id: doc.id,
+                                                img: doc['img'],
+                                                prc: doc['prc'],
+                                                name: doc['name'],
+                                                occation: doc['occation'],
+                                            ),
+                                          ))
+                                          :Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => disc(
@@ -346,133 +359,3 @@ Widget appbar() {
   );
 }
 
-Widget catagorys(v, ck, w) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      GestureDetector(
-        onTap: () {
-          v(0);
-        },
-        child: Container(
-          height: 50,
-          width: 100,
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-              color: ck[0]
-                  ? const Color.fromARGB(255, 194, 137, 119)
-                  : Colors.brown.shade700,
-              borderRadius: BorderRadius.circular(10)),
-          child: Center(
-              child: Text(
-            'Fasting',
-            style:
-                TextStyle(color: w, fontSize: 10, fontWeight: FontWeight.bold),
-          )),
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          v(1);
-        },
-        child: Container(
-          height: 50,
-          width: 100,
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-              color: ck[1]
-                  ? const Color.fromARGB(255, 194, 137, 119)
-                  : Colors.brown.shade700,
-              borderRadius: BorderRadius.circular(10)),
-          child: Center(
-              child: Text(
-            'Non-Fasting',
-            style:
-                TextStyle(color: w, fontSize: 10, fontWeight: FontWeight.bold),
-          )),
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          v(2);
-        },
-        child: Container(
-          height: 50,
-          width: 100,
-          margin: EdgeInsets.only(left: 10),
-          decoration: BoxDecoration(
-              color: ck[2]
-                  ? const Color.fromARGB(255, 194, 137, 119)
-                  : Colors.brown.shade700,
-              borderRadius: BorderRadius.circular(10)),
-          child: Center(
-              child: Text(
-            'Custome',
-            style:
-                TextStyle(color: w, fontSize: 10, fontWeight: FontWeight.bold),
-          )),
-        ),
-      ),
-    ],
-  );
-  //   SizedBox(
-  //   height: 20,
-  // );
-}
-
-
-
-//  Widget plate(String img, String name, double prc) {
-//     return Container(
-//         width: 200,
-//         decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(20),
-//             color: Colors.brown.shade700),
-//         child: Padding(
-//           padding: const EdgeInsets.all(10.0),
-//           child:
-//               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.end,
-//               children: [
-//                 IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(
-//                       Icons.favorite_border,
-//                       color: w,
-//                     ))
-//               ],
-//             ),
-//             Center(
-//               child: SizedBox(
-//                 height: 80,
-//                 child: Stack(
-//                   children: [
-//                     Image.asset(img),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             Text(
-//               name,
-//               style: TextStyle(
-//                   color: w, fontSize: 15, fontWeight: FontWeight.bold),
-//             ),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   '${prc}',
-//                   style: TextStyle(color: w, fontSize: 20),
-//                 ),
-//                 IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(
-//                       Icons.circle_notifications,
-//                       color: w,
-//                     ))
-//               ],
-//             )
-//           ]),
-//         ));
-//   }

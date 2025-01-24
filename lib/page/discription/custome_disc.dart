@@ -1,11 +1,25 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee/page/chat/chat.dart';
 import 'package:coffee/page/search/search.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CakeOrderingPage extends StatefulWidget {
+  String id;
+  String img;
+  String name;
+  double prc;
+  String occation;
+  CakeOrderingPage(
+      {super.key,
+      required this.id,
+      required this.img,
+      required this.prc,
+      required this.name,
+      required this.occation});
+
   @override
   _CakeOrderingPageState createState() => _CakeOrderingPageState();
 }
@@ -45,11 +59,47 @@ class _CakeOrderingPageState extends State<CakeOrderingPage> {
     }
   }
 
+  Future<void> addToCart(
+      {required String itemId,
+      required String name,
+      required double price,
+      required String img,
+      required String? size,
+      required String? flavor,
+      required String? diary,
+      required String? date,
+      required String? image,
+      required String? Additional,
+      required String occasion,
+      required String? customize}) async {
+    //final User? user = FirebaseAuth.instance.currentUser;
+
+    final cartRef = FirebaseFirestore.instance
+        .collection('use')
+        .doc('1')
+        .collection('cart')
+        .doc(itemId);
+
+    await cartRef.set({
+      'name': name,
+      'price': price,
+      'img': img,
+      'size': size,
+      'flavor': flavor,
+      'diary': diary,
+      'date': date,
+      'Additional': Additional,
+      'occasion': occasion,
+      'image': image,
+      'customize': customize,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Customize Your Cake'),
+        title: Text(widget.name),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -57,35 +107,35 @@ class _CakeOrderingPageState extends State<CakeOrderingPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Container(
-              height: 360,
-              // foregroundDecoration: BoxDecoration(image: DecorationImage(image: AssetImage("asset/images/c.jpg"), fit: BoxFit.cover)),
+              Container(
+                height: 360,
+                // foregroundDecoration: BoxDecoration(image: DecorationImage(image: AssetImage("asset/images/c.jpg"), fit: BoxFit.cover)),
 
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                      image: AssetImage('asset/images/irish.jpg'), fit: BoxFit.cover)),
-              // child: Row(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     IconButton(
-              //         onPressed: () {
-              //           Navigator.pop(context);
-              //         },
-              //         icon: Icon(
-              //           Icons.arrow_back_ios,
-              //           color: w,
-              //         )),
-              //     IconButton(
-              //         onPressed: () {},
-              //         icon: Icon(
-              //           Icons.favorite_border,
-              //           color: w,
-              //         ))
-              //   ],
-              // ),
-            ),
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    image: DecorationImage(
+                        image: AssetImage(widget.img), fit: BoxFit.cover)),
+                // child: Row(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     IconButton(
+                //         onPressed: () {
+                //           Navigator.pop(context);
+                //         },
+                //         icon: Icon(
+                //           Icons.arrow_back_ios,
+                //           color: w,
+                //         )),
+                //     IconButton(
+                //         onPressed: () {},
+                //         icon: Icon(
+                //           Icons.favorite_border,
+                //           color: w,
+                //         ))
+                //   ],
+                // ),
+              ),
 
               // AspectRatio(
               //   aspectRatio: 3 / 1,
@@ -102,15 +152,16 @@ class _CakeOrderingPageState extends State<CakeOrderingPage> {
                   ),
                   Center(
                     child: Text(
-                        'Occasion - birthday',
-                        style: TextStyle(fontSize: 16),
-                      ),
+                      'Occasion - ' + widget.occation,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
 
               SizedBox(height: 16),
-               Text('Customize Your Cake',
+              Text('Customize Your Cake',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Divider(),
               Text('Flavor',
@@ -122,26 +173,26 @@ class _CakeOrderingPageState extends State<CakeOrderingPage> {
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                         _selectedFlavor = option;
+                          _selectedFlavor = option;
                         });
-                    
                       },
                       child: Container(
                         margin: EdgeInsets.all(4.0),
                         padding: EdgeInsets.symmetric(vertical: 10.0),
                         decoration: BoxDecoration(
-                           color: _selectedFlavor == option
-                    ? Colors.brown
-                    : Colors.grey[200],
+                          color: _selectedFlavor == option
+                              ? Colors.brown
+                              : Colors.grey[200],
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         alignment: Alignment.center,
-                        child: Text(option,
-                        style: TextStyle(
-                  color:_selectedFlavor == option
-                      ? Colors.white
-                      : Colors.black,
-                ),
+                        child: Text(
+                          option,
+                          style: TextStyle(
+                            color: _selectedFlavor == option
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                       ),
                     ),
@@ -157,8 +208,7 @@ class _CakeOrderingPageState extends State<CakeOrderingPage> {
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
-                        _selectedDiary = option;
-                          
+                          _selectedDiary = option;
                         });
                         // Handle diary option selection
                       },
@@ -166,19 +216,19 @@ class _CakeOrderingPageState extends State<CakeOrderingPage> {
                         margin: EdgeInsets.all(4.0),
                         padding: EdgeInsets.symmetric(vertical: 10.0),
                         decoration: BoxDecoration(
-                          
-                            color: _selectedDiary == option
-                    ? Colors.brown
-                    : Colors.grey[200],
+                          color: _selectedDiary == option
+                              ? Colors.brown
+                              : Colors.grey[200],
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         alignment: Alignment.center,
-                        child: Text(option,
-                        style: TextStyle(
-                  color: _selectedDiary == option
-                      ? Colors.white
-                      : Colors.black,
-                ),
+                        child: Text(
+                          option,
+                          style: TextStyle(
+                            color: _selectedDiary == option
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                       ),
                     ),
@@ -258,54 +308,65 @@ class _CakeOrderingPageState extends State<CakeOrderingPage> {
                     hintText: 'Additional information'),
               ),
               SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
                   Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Add to cart logic goes here.
-                  },
-                  child: Text('Add to Cart'),
-                ),
-              ),
-                TextButton(
-                          onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        Search(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      const begin = Offset(1.0, 0.0);
-                      const end = Offset.zero;
-                      const curve = Curves.easeInOut;
-                
-                      var tween = Tween(begin: begin, end: end).chain(
-                        CurveTween(curve: curve),
-                      );
-                
-                      var offsetAnimation = animation.drive(tween);
-                
-                      return SlideTransition(
-                        position: offsetAnimation,
-                        child: child,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Add to cart logic goes here.
+                        addToCart(
+                            itemId: widget.id,
+                            name: widget.name,
+                            price: widget.prc,
+                            img: widget.img,
+                            size: _selectedSize,
+                            flavor: _selectedFlavor,
+                            diary: _selectedDiary,
+                            date: _selectedDate.toString(),
+                            image: _customImage.toString(),
+                            Additional: _additionalInfoController.text,
+                            occasion: widget.occation,
+                            customize: _customTextController.text);
+                      },
+                      child: Text('Add to Cart'),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  ChatScreen(senderId: '1',receiverId: 'owner',),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(1.0, 0.0);
+                            const end = Offset.zero;
+                            const curve = Curves.easeInOut;
+
+                            var tween = Tween(begin: begin, end: end).chain(
+                              CurveTween(curve: curve),
+                            );
+
+                            var offsetAnimation = animation.drive(tween);
+
+                            return SlideTransition(
+                              position: offsetAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
                       );
                     },
+                    child: Text(
+                      'contact saler',
+                      style: TextStyle(fontSize: 18, color: Colors.blue),
+                    ),
                   ),
-                );
-                          },
-                          child: Text(
-                'contact saler',
-                style: TextStyle(fontSize: 18, color: Colors.blue),
-                          ),
-                        ),
-                
-                        
-              ],
-            ),
-             
+                ],
+              ),
             ],
           ),
         ),
