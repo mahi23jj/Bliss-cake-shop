@@ -1,4 +1,8 @@
+import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
+
+import 'package:chapa_unofficial/chapa_unofficial.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class cart extends StatefulWidget {
@@ -30,6 +34,48 @@ class _cartState extends State<cart> {
   }
 
   double totalvalue = 0;
+
+    Future<void> verify() async {
+    Map<String, dynamic> verificationResult =
+        await Chapa.getInstance.verifyPayment(
+      txRef: TxRefRandomGenerator.gettxRef,
+    );
+    if (kDebugMode) {
+      print(verificationResult);
+    }
+  }
+
+  Future<void> pay(double money) async {
+    try {
+      // Generate a random transaction reference with a custom prefix
+      String txRef = TxRefRandomGenerator.generate(prefix: 'linat');
+
+      // Access the generated transaction reference
+      String storedTxRef = TxRefRandomGenerator.gettxRef;
+
+      // Print the generated transaction reference and the stored transaction reference
+      if (kDebugMode) {
+        print('Generated TxRef: $txRef');
+        print('Stored TxRef: $storedTxRef');
+      }
+      await Chapa.getInstance.startPayment(
+        context: context,
+        onInAppPaymentSuccess: (successMsg) {
+          // Handle success events
+        },
+        onInAppPaymentError: (errorMsg) {
+          // Handle error
+        },
+        amount: money.toString(),
+        currency: 'ETB',
+        txRef: storedTxRef,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -297,6 +343,7 @@ class _cartState extends State<cart> {
                     GestureDetector(
                       onTap: () {
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(),));
+                        pay(totalvalue);
                       },
                       child: Container(
                         // width: MediaQuery.of(context).size.height * 0.7,

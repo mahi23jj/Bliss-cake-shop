@@ -50,6 +50,7 @@ dependencies:
   firebase_database: ^10.1.3
   image_picker:
   carousel_slider:
+  chapa_unofficial:
 
 
 
